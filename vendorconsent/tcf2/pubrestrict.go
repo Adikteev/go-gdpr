@@ -9,8 +9,7 @@ import (
 // IAB spec does not specify a max vendorID for the publisher restrictions. This should be one bit short of the max possible.
 const assumedMaxVendorID uint16 = 32767
 
-func parsePubRestriction(metadata ConsentMetadata, startbit uint) (*pubRestrictions, uint, error) {
-	data := metadata.data
+func parsePubRestriction(data []byte, startbit uint) (*pubRestrictions, uint, error) {
 	numRestrictions, err := bitutils.ParseUInt12(data, startbit)
 	if err != nil {
 		return nil, 0, fmt.Errorf("Error on parsing the number of publisher restrictions: %s", err.Error())

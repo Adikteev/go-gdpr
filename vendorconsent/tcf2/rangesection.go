@@ -6,9 +6,7 @@ import (
 	"github.com/prebid/go-gdpr/bitutils"
 )
 
-func parseRangeSection(metadata ConsentMetadata, maxVendorID uint16, startbit uint) (*rangeSection, uint, error) {
-	data := metadata.data
-
+func parseRangeSection(data []byte, maxVendorID uint16, startbit uint) (*rangeSection, uint, error) {
 	if len(data) < 31 {
 		return nil, 0, fmt.Errorf("vendor consent strings using RangeSections require at least 31 bytes. Got %d", len(data))
 	}
