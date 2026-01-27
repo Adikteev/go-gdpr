@@ -7,8 +7,10 @@ import (
 )
 
 func parseRangeSection(data []byte, maxVendorID uint16, startbit uint) (*rangeSection, uint, error) {
-	if len(data) < 31 {
-		return nil, 0, fmt.Errorf("vendor consent strings using RangeSections require at least 31 bytes. Got %d", len(data))
+	// Validate we have enough bytes to read NumEntries (12 bits starting at startbit)
+	minBytesRequired := (startbit + 12 + 7) / 8
+	if uint(len(data)) < minBytesRequired {
+		return nil, 0, fmt.Errorf("required data to read RangeSection NumEntries field at bit %d: need %d bytes, got %d", startbit, minBytesRequired, len(data))
 	}
 
 	// This makes an int from bits [startBit, startBit + 12)
